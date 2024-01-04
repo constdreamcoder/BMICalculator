@@ -31,53 +31,97 @@ class BMICalculatorViewController: UIViewController {
         
         configureUI()
     }
-
-    private func configureUI() {
-        titleLabel.text = "BMI Calculator"
-        titleLabel.font = .systemFont(ofSize: 25.0, weight: .bold)
-        titleLabel.textAlignment = .left
-        
-        subtitleLabel.text = "당신의 BMI 지수를\n알려드릴게요."
-        subtitleLabel.font = .systemFont(ofSize: 15.0)
-        subtitleLabel.textAlignment = .left
-        
-        characterImageView.image = UIImage(named: "image")
-        characterImageView.contentMode = .scaleAspectFit
-        
-        heightInquiryLabel.text = "키가 어떻게 되시나요?"
-        heightInquiryLabel.font = .systemFont(ofSize: 15.0)
-        heightInquiryLabel.textAlignment = .left
     
-        heightInputStackView.layer.borderWidth = 2
-        heightInputStackView.layer.borderColor = UIColor.lightGray.cgColor
-        heightInputStackView.layer.cornerRadius = 16
+    // MARK: - UI 디자인 관련 메소드
+    private func configureUI() {
+        designLabel(
+            titleLabel,
+            text: "BMI Calculator",
+            font: .systemFont(ofSize: 25.0, weight: .bold)
+        )
         
-        heightInputTextField.borderStyle = .none
-        heightInputTextField.keyboardType = .numberPad
+        designLabel(
+            subtitleLabel,
+            text: "당신의 BMI 지수를\n알려드릴게요.",
+            font: .systemFont(ofSize: 15.0)
+        )
         
-        weightInquiryLabel.text = "몸무게는 어떻게 되시나요?"
-        weightInquiryLabel.font = .systemFont(ofSize: 15.0)
-        weightInquiryLabel.textAlignment = .left
+        designCharacterImageView()
         
-        weightInputStackView.layer.borderWidth = 2
-        weightInputStackView.layer.borderColor = UIColor.lightGray.cgColor
-        weightInputStackView.layer.cornerRadius = 16
+        designLabel(
+            heightInquiryLabel,
+            text: "키가 어떻게 되시나요?",
+            font: .systemFont(ofSize: 15.0)
+        )
         
-        weightInputTextField.borderStyle = .none
-        weightInputTextField.keyboardType = .numberPad
+        designStackView(heightInputStackView)
+
+        designTextField(heightInputTextField)
         
+        designLabel(
+            weightInquiryLabel,
+            text: "몸무게는 어떻게 되시나요?",
+            font: .systemFont(ofSize: 15.0)
+        )
+        
+        designStackView(weightInputStackView)
+        
+        designTextField(weightInputTextField)
+        
+        designShowAndHideButton()
+        
+        designButton(randomBMICalculationButton, title: "랜덤으로 BMI 계산하기", titleColor: .red, font: .systemFont(ofSize: 15.0))
+        
+        designButton(showResultButton, title: "결과 확인", titleColor: .white, font: .systemFont(ofSize: 22.0), cornerRadius: 10, backgroundColor: .purple)
+    }
+    
+    private func designLabel(_ label: UILabel, text: String, font: UIFont, textAlignment: NSTextAlignment = .left) {
+        label.text = text
+        label.font = font
+        label.textAlignment = textAlignment
+    }
+    
+    private func designStackView(_ stackView: UIStackView) {
+        stackView.layer.borderWidth = 2
+        stackView.layer.borderColor = UIColor.lightGray.cgColor
+        stackView.layer.cornerRadius = 16
+    }
+    
+    private func designTextField(_ textField: UITextField) {
+        textField.borderStyle = .none
+        textField.keyboardType = .numberPad
+    }
+    
+    private func designButton(
+        _ button: UIButton,
+        title: String,
+        titleColor: UIColor,
+        font: UIFont? = nil,
+        cornerRadius: CGFloat? = nil,
+        backgroundColor: UIColor = .clear
+    ) {
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(titleColor, for: .normal)
+        button.backgroundColor = backgroundColor
+
+        if let font = font {
+            button.titleLabel?.font = font
+        }
+        
+        if let cornerRadius = cornerRadius {
+            button.layer.cornerRadius = cornerRadius
+        }
+    }
+    
+    private func designShowAndHideButton() {
         let showAndHideButtonImage = UIImage(systemName: "eye.slash")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
         showAndHideButton.setImage(showAndHideButtonImage, for: .normal)
         showAndHideButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 20), forImageIn: .normal)
-        
-        randomBMICalculationButton.setTitle("랜덤으로 BMI 계산하기", for: .normal)
-        randomBMICalculationButton.setTitleColor(.red, for: .normal)
-        randomBMICalculationButton.titleLabel?.font = .systemFont(ofSize: 15.0)
-        
-        showResultButton.setTitle("결과 확인", for: .normal)
-        showResultButton.setTitleColor(.white, for: .normal)
-        showResultButton.layer.cornerRadius = 10
-        showResultButton.backgroundColor = .purple
+    }
+    
+    private func designCharacterImageView() {
+        characterImageView.image = UIImage(named: "image")
+        characterImageView.contentMode = .scaleAspectFit
     }
     
     private func showAlertController(title: String, message: String) {
@@ -90,6 +134,7 @@ class BMICalculatorViewController: UIViewController {
         present(alert, animated: true)
     }
     
+    // MARK: - 유저 이벤트 관련 메소드
     @IBAction func inputTextFieldChanged(_ sender: UITextField) {
         guard let text = sender.text else {
             showAlertController(
