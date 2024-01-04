@@ -133,6 +133,14 @@
                                     <action selector="randomCalculationButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xtR-gf-j4p"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mYn-M0-lao">
+                                <rect key="frame" x="40" y="538.66666666666663" width="30" height="30"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title=""/>
+                                <connections>
+                                    <action selector="resetButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aRb-Ku-UTt"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -148,11 +156,13 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="or4-2T-Zrc" secondAttribute="trailing" symbolic="YES" id="Kgo-uI-hUT"/>
                             <constraint firstItem="0hZ-nn-1iZ" firstAttribute="trailing" secondItem="HpV-l0-hTq" secondAttribute="trailing" constant="-16" id="MCz-in-cKN"/>
                             <constraint firstItem="hCn-h7-2OS" firstAttribute="leading" secondItem="HpV-l0-hTq" secondAttribute="leading" id="Oec-qy-8pn"/>
+                            <constraint firstItem="0hZ-nn-1iZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mYn-M0-lao" secondAttribute="trailing" constant="8" symbolic="YES" id="PmO-fD-LXS"/>
                             <constraint firstItem="0hZ-nn-1iZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" symbolic="YES" id="Qq4-Lr-nhd"/>
                             <constraint firstItem="HpV-l0-hTq" firstAttribute="leading" secondItem="rfw-Fw-twB" secondAttribute="leading" id="ScE-6c-fIy"/>
                             <constraint firstItem="rfw-Fw-twB" firstAttribute="top" secondItem="zrm-xM-Pdw" secondAttribute="bottom" id="SoG-mt-Ua8"/>
                             <constraint firstItem="0hZ-nn-1iZ" firstAttribute="top" secondItem="HpV-l0-hTq" secondAttribute="bottom" constant="16" id="VSh-QW-rnf"/>
                             <constraint firstItem="or4-2T-Zrc" firstAttribute="leading" secondItem="HpV-l0-hTq" secondAttribute="leading" constant="16" id="VxQ-6j-FXg"/>
+                            <constraint firstItem="mYn-M0-lao" firstAttribute="leading" secondItem="HpV-l0-hTq" secondAttribute="leading" constant="16" id="a0U-zI-U73"/>
                             <constraint firstItem="rfw-Fw-twB" firstAttribute="leading" secondItem="0e2-VD-ajZ" secondAttribute="leading" constant="-16" id="drt-4J-4Ax"/>
                             <constraint firstItem="zrm-xM-Pdw" firstAttribute="top" secondItem="UYd-vB-pNt" secondAttribute="top" constant="4" id="eqJ-qE-50p"/>
                             <constraint firstItem="HpV-l0-hTq" firstAttribute="top" secondItem="rfw-Fw-twB" secondAttribute="bottom" constant="80" id="gCR-6P-b4d"/>
@@ -160,6 +170,7 @@
                             <constraint firstItem="WY5-bq-2Gw" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="24" id="m19-F5-nFK"/>
                             <constraint firstItem="HpV-l0-hTq" firstAttribute="trailing" secondItem="rfw-Fw-twB" secondAttribute="trailing" id="oZg-7i-DfO"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="rfw-Fw-twB" secondAttribute="trailing" constant="24" id="ops-Xk-3s1"/>
+                            <constraint firstItem="mYn-M0-lao" firstAttribute="centerY" secondItem="0hZ-nn-1iZ" secondAttribute="centerY" id="qSs-YA-gy8"/>
                             <constraint firstItem="zrm-xM-Pdw" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.3" id="wp7-iQ-GD5"/>
                         </constraints>
                         <connections>
@@ -172,6 +183,7 @@
                         <outlet property="heightInputTextField" destination="57D-na-GRm" id="tsI-hG-kHa"/>
                         <outlet property="heightInquiryLabel" destination="0e2-VD-ajZ" id="DqH-f2-Zir"/>
                         <outlet property="randomBMICalculationButton" destination="0hZ-nn-1iZ" id="Sq0-U9-gXW"/>
+                        <outlet property="resetButton" destination="mYn-M0-lao" id="C6G-Xa-na4"/>
                         <outlet property="showAndHideButton" destination="Kxg-v9-Byd" id="jMy-Ak-bow"/>
                         <outlet property="showResultButton" destination="hCn-h7-2OS" id="GEP-0G-sQC"/>
                         <outlet property="subtitleLabel" destination="DoC-0k-dQj" id="TBt-dx-E1e"/>
@@ -196,10 +208,10 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemPurpleColor">
-            <color red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

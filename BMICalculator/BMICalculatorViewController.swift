@@ -22,13 +22,21 @@ class BMICalculatorViewController: UIViewController {
     @IBOutlet weak var weightInputTextField: UITextField!
     @IBOutlet weak var showAndHideButton: UIButton!
 
+    @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var randomBMICalculationButton: UIButton!
     
     @IBOutlet weak var showResultButton: UIButton!
     
+    let nicknameList = ["김치말이", "순대국밥", "고래밥", "홀리몰리", "우가우가", "말랑보스햄토리", "쪼물쪼물", "실화임?"]
+    
+    var nickname: String = ""
+    var height: Float = 0.0
+    var weight: Float = 0.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        getUserDatas()
         configureUI()
     }
     
@@ -42,7 +50,7 @@ class BMICalculatorViewController: UIViewController {
         
         designLabel(
             subtitleLabel,
-            text: "당신의 BMI 지수를\n알려드릴게요.",
+            text: setSubtitleLabelText(),
             font: .systemFont(ofSize: 15.0)
         )
         
@@ -69,6 +77,8 @@ class BMICalculatorViewController: UIViewController {
         designTextField(weightInputTextField)
         
         designShowAndHideButton()
+        
+        designButton(resetButton, title: "리셋", titleColor: .blue, font: .systemFont(ofSize: 15.0))
         
         designButton(randomBMICalculationButton, title: "랜덤으로 BMI 계산하기", titleColor: .red, font: .systemFont(ofSize: 15.0))
         
@@ -150,6 +160,19 @@ class BMICalculatorViewController: UIViewController {
         }
     }
     
+    @IBAction func resetButtonTapped(_ sender: UIButton) {
+        heightInputTextField.text = ""
+        weightInputTextField.text = ""
+        
+        self.nickname = ""
+        self.height = 0.0
+        self.weight = 0.0
+        
+        UserDefaults.standard.removeObject(forKey: "Nickname")
+        UserDefaults.standard.removeObject(forKey: "Height")
+        UserDefaults.standard.removeObject(forKey: "Weight")
+    }
+    
     @IBAction func randomCalculationButtonTapped(_ sender: UIButton) {
         let randomHeight = Int.random(in: 150...200)
         let randomWeight = Int.random(in: 40...100)
@@ -157,7 +180,12 @@ class BMICalculatorViewController: UIViewController {
         heightInputTextField.text = randomHeight.description
         weightInputTextField.text = randomWeight.description
         
-        let bmiResult = calculateBMI(height: Float(randomHeight), weight: Float(randomWeight))
+        let convertedRandomHeight = Float(randomHeight)
+        let convertedRandomWeight = Float(randomWeight)
+        
+        setUserDatas(nickname: self.nickname, height: convertedRandomHeight, weight: convertedRandomWeight)
+
+        let bmiResult = calculateBMI(height: convertedRandomHeight, weight: convertedRandomWeight)
         showAlertController(
             title: "BMI 지수 계산 결과",
             message: "\(evaluateBMIStage(bmiFigure: bmiResult))\n\(bmiResult)"
@@ -176,7 +204,10 @@ class BMICalculatorViewController: UIViewController {
             return
         }
         
-        catchErrors(height: height, weight: weight)
+        let hasErrors = hasErrors(height: height, weight: weight)
+        guard hasErrors == false else { return }
+        
+        setUserDatas(nickname: self.nickname, height: height, weight: weight)
         
         let bmiResult = calculateBMI(height: height, weight: weight)
         showAlertController(
@@ -212,53 +243,84 @@ class BMICalculatorViewController: UIViewController {
         }
     }
     
-    private func catchErrors(height: Float, weight: Float) {
+    private func hasErrors(height: Float, weight: Float) -> Bool {
         if 0..<150 ~= height && 0..<40 ~= weight {
             showAlertController(
                 title: "범위 오류",
                 message: "키와 몸무게가 너무 낮게 입력되었습니다."
             )
+            return true
         } else if 0..<150 ~= height && weight > 100 {
             showAlertController(
                 title: "범위 오류",
                 message: "키는 너무 낮게 입력되었고, 몸무게는 너무 높게 입력되었습니다."
             )
+            return true
         } else if height > 200 && 0..<40 ~= weight {
             showAlertController(
                 title: "범위 오류",
                 message: "키는 너무 높게 입력되었고, 몸무게는 너무 낮게 입력되었습니다."
             )
+            return true
         } else if height > 200 && weight > 100 {
             showAlertController(
                 title: "범위 오류",
                 message: "키와 몸무게 모두 너무 높게 입력되었습니다."
             )
+            return true
         } else if 0..<150 ~= height {
             showAlertController(
                 title: "범위 오류",
                 message: "키가 너무 낮게 입력되었습니다."
             )
+            return true
         } else if height > 200 {
             showAlertController(
                 title: "범위 오류",
                 message: "키가 너무 높게 입력되었습니다."
             )
+            return true
         } else if 0..<40 ~= weight {
             showAlertController(
                 title: "범위 오류",
                 message: "몸무게가 너무 낮게 입력되었습니다."
             )
+            return true
         } else if weight > 100 {
             showAlertController(
                 title: "범위 오류",
                 message: "몸무게가 너무 높게 입력되었습니다."
             )
+            return true
         }
+        return false
     }
     
     private func containsOnlyDigits(_ input: String) -> Bool {
         let pattern = "^[0-9]+$"
         guard let _ = input.range(of: pattern, options: .regularExpression) else { return false }
         return true
+    }
+    
+    // MARK: - 유저 정보 표시 관련 메소드
+    private func setSubtitleLabelText() -> String {
+        if self.nickname != "" {
+           return "\(self.nickname)님\n어서오세요!"
+        }
+        return "당신의 BMI 지수를\n알려드릴게요."
+    }
+    
+    // MARK: - 유저 정보 호출 관련 메소드
+    private func getUserDatas() {
+//        self.nickname = UserDefaults.standard.string(forKey: "Nickname") ?? ""
+        self.nickname = nicknameList.randomElement()!
+        self.height = UserDefaults.standard.float(forKey: "Height")
+        self.weight = UserDefaults.standard.float(forKey: "Weight")
+    }
+    
+    private func setUserDatas(nickname: String, height: Float, weight: Float) {
+        UserDefaults.standard.set(nickname, forKey: "Nickname")
+        UserDefaults.standard.set(height, forKey: "Height")
+        UserDefaults.standard.set(weight, forKey: "Weight")
     }
 }
